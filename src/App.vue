@@ -28,11 +28,21 @@
 		</div>
 
 		<div class="input_view m10">
-			<div class="upload-view-text">身份证照片</div>
+			<div class="upload-view-text">身份证正面照片</div>
 			<div class="upload-view">
 				<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList" ref="upload1"
 					list-type="picture-card" :on-success="handleSuccess1">
 					<img src="./assets/idcard.png" class="upload-view-img m10" />
+				</el-upload>
+			</div>
+		</div>
+
+		<div class="input_view m10">
+			<div class="upload-view-text">身份证背面照片</div>
+			<div class="upload-view">
+				<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList" ref="upload1"
+					list-type="picture-card" :on-success="handleSuccess4">
+					<img src="./assets/idcard_back.png" class="upload-view-img m10" />
 				</el-upload>
 			</div>
 		</div>
@@ -83,6 +93,7 @@
 				file1: "",
 				file2: "",
 				file3: "",
+				file4: "",
 				loading: false,
 				dialogVisible: false,
 			};
@@ -119,6 +130,16 @@
 					this.showMessage(res_msg, "warning");
 				}
 			},
+			handleSuccess4(response, file, fileList) {
+				var res_code = response.res_code;
+				if (res_code == 0) {
+					var data = response.data;
+					this.file4 = data;
+				} else {
+					var res_msg = response.res_msg;
+					this.showMessage(res_msg, "warning");
+				}
+			},
 
 			showMessage(text, type) {
 				this.$message({
@@ -142,6 +163,7 @@
 				var front_of_id_card = this.file1;
 				var hand_of_id_card = this.file2;
 				var proposer = this.file3;
+				var back_id_card = this.file4;
 
 				if (user_id.length == 0) {
 					this.showMessage("请输入用户ID", "warning");
@@ -159,6 +181,10 @@
 					this.showMessage("请上传身份证正面照片", "warning");
 					return;
 				}
+				if (back_id_card.length == 0) {
+					this.showMessage("请上传身份证背面照片", "warning");
+					return;
+				}
 				if (hand_of_id_card.length == 0) {
 					this.showMessage("请上传手持身份证照片", "warning");
 					return;
@@ -174,6 +200,8 @@
 					hand_of_id_card + " proposer" + proposer
 				);
 
+				console.log("back_id_card " + back_id_card);
+
 				this.loading = true;
 
 				var url = "https://api.mypallet.org/api/userProposer/create";
@@ -183,7 +211,8 @@
 					"self_num": self_num,
 					"front_of_id_card": front_of_id_card,
 					"hand_of_id_card": hand_of_id_card,
-					"proposer": proposer
+					"proposer": proposer,
+					"reverse_of_id_card": back_id_card,
 				}
 
 				try {
