@@ -85,7 +85,7 @@
 		name: 'app',
 		data() {
 			return {
-				action: "https://api.mypallet.org/api/upload_oss",
+				action: "https://apiv2.mypallet.org/api/upload_oss",
 				userIDText: "",
 				nameText: "",
 				idNumersText: "",
@@ -204,7 +204,7 @@
 
 				this.loading = true;
 
-				var url = "https://api.mypallet.org/api/userProposer/create";
+				var url = "https://apiv2.mypallet.org/api/userProposer/create";
 				var params = {
 					"user_id": user_id,
 					"username": username,
