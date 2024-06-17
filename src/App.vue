@@ -40,7 +40,7 @@
 		<div class="input_view m10">
 			<div class="upload-view-text">身份证背面照片</div>
 			<div class="upload-view">
-				<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList" ref="upload1"
+				<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList" ref="upload2"
 					list-type="picture-card" :on-success="handleSuccess4">
 					<img src="./assets/idcard_back.png" class="upload-view-img m10" />
 				</el-upload>
@@ -50,7 +50,7 @@
 		<div class="input_view m10">
 			<div class="upload-view-text">手持身份证照片</div>
 			<div class="upload-view">
-				<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList" ref="upload2"
+				<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList" ref="upload3"
 					list-type="picture-card" :on-success="handleSuccess2">
 					<img src="./assets/hand.png" class="upload-view-img m10" />
 				</el-upload>
@@ -63,7 +63,7 @@
 				<div class="upload-view-default" @click="seeDefault">查看示例</div>
 			</div>
 			<div class="upload-view">
-				<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList" ref="upload3"
+				<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList" ref="upload4"
 					list-type="picture-card" :on-success="handleSuccess3">
 					<img src="./assets/shenqing.png" class="upload-view-img m10" />
 				</el-upload>
@@ -108,6 +108,7 @@
 				} else {
 					var res_msg = response.res_msg;
 					this.showMessage(res_msg, "warning");
+					this.$refs.upload1.clearFiles();
 				}
 			},
 			handleSuccess2(response, file, fileList) {
@@ -118,6 +119,7 @@
 				} else {
 					var res_msg = response.res_msg;
 					this.showMessage(res_msg, "warning");
+					this.$refs.upload2.clearFiles();
 				}
 			},
 			handleSuccess3(response, file, fileList) {
@@ -128,6 +130,7 @@
 				} else {
 					var res_msg = response.res_msg;
 					this.showMessage(res_msg, "warning");
+					this.$refs.upload3.clearFiles();
 				}
 			},
 			handleSuccess4(response, file, fileList) {
@@ -138,6 +141,7 @@
 				} else {
 					var res_msg = response.res_msg;
 					this.showMessage(res_msg, "warning");
+					this.$refs.upload4.clearFiles();
 				}
 			},
 
