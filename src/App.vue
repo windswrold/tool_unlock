@@ -59,7 +59,7 @@
 
 		<div class="input_view m10">
 			<div style="display: flex;justify-content: space-between">
-				<div class="upload-view-text">解封申请书</div>
+				<div class="upload-view-text">手持解封申请书</div>
 				<div class="upload-view-default" @click="seeDefault">查看示例</div>
 			</div>
 			<div class="upload-view">
@@ -79,249 +79,249 @@
 </template>
 
 <script>
-	import axios from "axios";
+import axios from "axios";
 
-	export default {
-		name: 'app',
-		data() {
-			return {
-				action: "https://apiv2.mypallet.org/api/upload_oss",
-				userIDText: "",
-				nameText: "",
-				idNumersText: "",
-				fileList: [],
-				file1: "",
-				file2: "",
-				file3: "",
-				file4: "",
-				loading: false,
-				dialogVisible: false,
-			};
+export default {
+	name: 'app',
+	data() {
+		return {
+			action: "https://apiv2.mypallet.org/api/upload_oss",
+			userIDText: "",
+			nameText: "",
+			idNumersText: "",
+			fileList: [],
+			file1: "",
+			file2: "",
+			file3: "",
+			file4: "",
+			loading: false,
+			dialogVisible: false,
+		};
+	},
+	methods: {
+
+		handleSuccess1(response, file, fileList) {
+			var res_code = response.res_code;
+			if (res_code == 0) {
+				var data = response.data;
+				this.file1 = data;
+			} else {
+				var res_msg = response.res_msg;
+				this.showMessage(res_msg, "warning");
+				this.$refs.upload1.clearFiles();
+			}
 		},
-		methods: {
+		handleSuccess2(response, file, fileList) {
+			var res_code = response.res_code;
+			if (res_code == 0) {
+				var data = response.data;
+				this.file2 = data;
+			} else {
+				var res_msg = response.res_msg;
+				this.showMessage(res_msg, "warning");
+				this.$refs.upload2.clearFiles();
+			}
+		},
+		handleSuccess3(response, file, fileList) {
+			var res_code = response.res_code;
+			if (res_code == 0) {
+				var data = response.data;
+				this.file3 = data;
+			} else {
+				var res_msg = response.res_msg;
+				this.showMessage(res_msg, "warning");
+				this.$refs.upload3.clearFiles();
+			}
+		},
+		handleSuccess4(response, file, fileList) {
+			var res_code = response.res_code;
+			if (res_code == 0) {
+				var data = response.data;
+				this.file4 = data;
+			} else {
+				var res_msg = response.res_msg;
+				this.showMessage(res_msg, "warning");
+				this.$refs.upload4.clearFiles();
+			}
+		},
 
-			handleSuccess1(response, file, fileList) {
-				var res_code = response.res_code;
-				if (res_code == 0) {
-					var data = response.data;
-					this.file1 = data;
-				} else {
-					var res_msg = response.res_msg;
-					this.showMessage(res_msg, "warning");
-					this.$refs.upload1.clearFiles();
-				}
-			},
-			handleSuccess2(response, file, fileList) {
-				var res_code = response.res_code;
-				if (res_code == 0) {
-					var data = response.data;
-					this.file2 = data;
-				} else {
-					var res_msg = response.res_msg;
-					this.showMessage(res_msg, "warning");
-					this.$refs.upload2.clearFiles();
-				}
-			},
-			handleSuccess3(response, file, fileList) {
-				var res_code = response.res_code;
-				if (res_code == 0) {
-					var data = response.data;
-					this.file3 = data;
-				} else {
-					var res_msg = response.res_msg;
-					this.showMessage(res_msg, "warning");
-					this.$refs.upload3.clearFiles();
-				}
-			},
-			handleSuccess4(response, file, fileList) {
-				var res_code = response.res_code;
-				if (res_code == 0) {
-					var data = response.data;
-					this.file4 = data;
-				} else {
-					var res_msg = response.res_msg;
-					this.showMessage(res_msg, "warning");
-					this.$refs.upload4.clearFiles();
-				}
-			},
+		showMessage(text, type) {
+			this.$message({
+				message: text,
+				type: type
+			});
+		},
 
-			showMessage(text, type) {
-				this.$message({
-					message: text,
-					type: type
-				});
-			},
-
-			seeDefault() {
+		seeDefault() {
 
 
-				this.dialogVisible = true;
+			this.dialogVisible = true;
 
-			},
+		},
 
-			tapSubmit() {
+		tapSubmit() {
 
-				var user_id = this.userIDText;
-				var username = this.nameText;
-				var self_num = this.idNumersText;
-				var front_of_id_card = this.file1;
-				var hand_of_id_card = this.file2;
-				var proposer = this.file3;
-				var back_id_card = this.file4;
+			var user_id = this.userIDText;
+			var username = this.nameText;
+			var self_num = this.idNumersText;
+			var front_of_id_card = this.file1;
+			var hand_of_id_card = this.file2;
+			var proposer = this.file3;
+			var back_id_card = this.file4;
 
-				if (user_id.length == 0) {
-					this.showMessage("请输入用户ID", "warning");
-					return;
-				}
-				if (username.length == 0) {
-					this.showMessage("请输入姓名", "warning");
-					return;
-				}
-				if (self_num.length == 0) {
-					this.showMessage("请输入身份证号", "warning");
-					return;
-				}
-				if (front_of_id_card.length == 0) {
-					this.showMessage("请上传身份证正面照片", "warning");
-					return;
-				}
-				if (back_id_card.length == 0) {
-					this.showMessage("请上传身份证背面照片", "warning");
-					return;
-				}
-				if (hand_of_id_card.length == 0) {
-					this.showMessage("请上传手持身份证照片", "warning");
-					return;
-				}
-				if (proposer.length == 0) {
-					this.showMessage("请上传解封申请书", "warning");
-					return;
-				}
+			if (user_id.length == 0) {
+				this.showMessage("请输入用户ID", "warning");
+				return;
+			}
+			if (username.length == 0) {
+				this.showMessage("请输入姓名", "warning");
+				return;
+			}
+			if (self_num.length == 0) {
+				this.showMessage("请输入身份证号", "warning");
+				return;
+			}
+			if (front_of_id_card.length == 0) {
+				this.showMessage("请上传身份证正面照片", "warning");
+				return;
+			}
+			if (back_id_card.length == 0) {
+				this.showMessage("请上传身份证背面照片", "warning");
+				return;
+			}
+			if (hand_of_id_card.length == 0) {
+				this.showMessage("请上传手持身份证照片", "warning");
+				return;
+			}
+			if (proposer.length == 0) {
+				this.showMessage("请上传解封申请书", "warning");
+				return;
+			}
 
-				console.log("user_id " + user_id +
-					" username " + username +
-					" self_num " + self_num + " front_of_id_card" + front_of_id_card + "hand_of_id_card " +
-					hand_of_id_card + " proposer" + proposer
-				);
+			console.log("user_id " + user_id +
+				" username " + username +
+				" self_num " + self_num + " front_of_id_card" + front_of_id_card + "hand_of_id_card " +
+				hand_of_id_card + " proposer" + proposer
+			);
 
-				console.log("back_id_card " + back_id_card);
+			console.log("back_id_card " + back_id_card);
 
-				this.loading = true;
+			this.loading = true;
 
-				var url = "https://apiv2.mypallet.org/api/userProposer/create";
-				var params = {
-					"user_id": user_id,
-					"username": username,
-					"self_num": self_num,
-					"front_of_id_card": front_of_id_card,
-					"hand_of_id_card": hand_of_id_card,
-					"proposer": proposer,
-					"reverse_of_id_card": back_id_card,
-				}
+			var url = "https://apiv2.mypallet.org/api/userProposer/create";
+			var params = {
+				"user_id": user_id,
+				"username": username,
+				"self_num": self_num,
+				"front_of_id_card": front_of_id_card,
+				"hand_of_id_card": hand_of_id_card,
+				"proposer": proposer,
+				"reverse_of_id_card": back_id_card,
+			}
 
-				try {
-					axios.post(
-						url,
-						params
-					).then(resp => {
-						console.log('res ', resp.data);
-						this.loading = false;
-						var response = resp.data;
-						var res_code = response.res_code;
-						if (res_code == 0) {
-							this.showMessage("提交成功，等待审核", "success");
-						} else {
-							var res_msg = response.res_msg;
-							this.showMessage(res_msg, "warning");
-						}
+			try {
+				axios.post(
+					url,
+					params
+				).then(resp => {
+					console.log('res ', resp.data);
+					this.loading = false;
+					var response = resp.data;
+					var res_code = response.res_code;
+					if (res_code == 0) {
+						this.showMessage("提交成功，等待审核", "success");
+					} else {
+						var res_msg = response.res_msg;
+						this.showMessage(res_msg, "warning");
+					}
 
-					}).catch(err => {
-						console.log(err);
-						this.loading = false;
-						this.showMessage("请稍后再试", "warning");
-					});
-				} catch (e) {
+				}).catch(err => {
+					console.log(err);
 					this.loading = false;
 					this.showMessage("请稍后再试", "warning");
-				}
+				});
+			} catch (e) {
+				this.loading = false;
+				this.showMessage("请稍后再试", "warning");
+			}
 
-			},
+		},
 
-		}
 	}
+}
 </script>
 
 <style>
-	.view {
+.view {
 
-		padding: 20px 20px 0px 20px;
-	}
+	padding: 20px 20px 0px 20px;
+}
 
-	.input_view {
+.input_view {
 
-		border-radius: 14px;
-		background-color: white;
-		padding: 15px;
-	}
+	border-radius: 14px;
+	background-color: white;
+	padding: 15px;
+}
 
-	.input-suffix {
+.input-suffix {
 
-		display: flex;
-		justify-content: start;
-		align-items: center;
-	}
+	display: flex;
+	justify-content: start;
+	align-items: center;
+}
 
-	.input-suffix-text {
+.input-suffix-text {
 
-		color: #313131;
-		font-size: 15px;
-		width: 80px;
-	}
+	color: #313131;
+	font-size: 15px;
+	width: 80px;
+}
 
-	.custom-input-bg .el-input__inner {
+.custom-input-bg .el-input__inner {
 
-		color: #000000;
-		border: 0;
-		font-size: 15px;
-		background-color: transparent;
+	color: #000000;
+	border: 0;
+	font-size: 15px;
+	background-color: transparent;
 
-	}
+}
 
-	.upload-view {
+.upload-view {
 
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
 
-	.upload-view-text {
+.upload-view-text {
 
-		color: #000000;
-		font-size: 15px;
-	}
+	color: #000000;
+	font-size: 15px;
+}
 
-	.upload-view-default {
+.upload-view-default {
 
-		color: #0C53FF;
-		font-size: 15px;
-	}
+	color: #0C53FF;
+	font-size: 15px;
+}
 
-	.upload-view-img {
+.upload-view-img {
 
-		width: 80px;
-		height: 80px;
-	}
+	width: 80px;
+	height: 80px;
+}
 
-	.upload-view-btn {
+.upload-view-btn {
 
-		border: #0C53FF;
-		border-radius: 15px;
-		color: #0C53FF;
-		border-width: 1;
-		background-color: white;
-	}
+	border: #0C53FF;
+	border-radius: 15px;
+	color: #0C53FF;
+	border-width: 1;
+	background-color: white;
+}
 
-	.m10 {
-		margin-top: 10px;
-	}
+.m10 {
+	margin-top: 10px;
+}
 </style>
