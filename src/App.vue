@@ -85,7 +85,7 @@ export default {
 	name: 'app',
 	data() {
 		return {
-			action: "https://apiv2.mypallet.org/api/upload_oss",
+			action: "https://apiv2.sr2.top/api/upload_oss",
 			userIDText: "",
 			nameText: "",
 			idNumersText: "",
@@ -207,8 +207,7 @@ export default {
 			console.log("back_id_card " + back_id_card);
 
 			this.loading = true;
-
-			var url = "https://apiv2.mypallet.org/api/userProposer/create";
+			var url = "https://apiv2.sr2.top/api/userProposer/create";
 			var params = {
 				"user_id": user_id,
 				"username": username,
