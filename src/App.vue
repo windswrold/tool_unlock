@@ -93,6 +93,8 @@
 								手机号
 							</div>
 							<el-input class="custom-input-bg" v-model="modile" placeholder="请输入手机号"></el-input>
+							<el-button style="color: transparent;background-color: transparent;border: 0;"
+								v-loading.fullscreen.lock="loading">{{verifyBtn}}</el-button>
 						</div>
 						<div class="input-suffix m10">
 							<div style="color: red;">*</div>
@@ -107,6 +109,7 @@
 							</div> -->
 							<el-button @click="sendCode" type="primary"
 								v-loading.fullscreen.lock="loading">{{verifyBtn}}</el-button>
+
 						</div>
 						<div class="input-suffix m10">
 							<div style="color: red;">*</div>
@@ -115,8 +118,56 @@
 							</div>
 
 							<el-input class="custom-input-bg" v-model="bindReason" placeholder="请输入解绑原因"></el-input>
+							<el-button style="color: transparent;background-color: transparent;border: 0;"
+								v-loading.fullscreen.lock="loading">{{verifyBtn}}</el-button>
 						</div>
 						<el-button style="width: 100%;margin-top: 50px;margin-bottom: 100px;" @click="tapSubmit2"
+							type="primary" v-loading.fullscreen.lock="loading">确定</el-button>
+					</div>
+				</div>
+
+			</el-tab-pane>
+
+			<el-tab-pane label="更换绑定" name="first">
+
+				<div>
+					<div class="input_view">
+
+						<div class="input-suffix">
+							<div style="color: red;">*</div>
+							<div class="input-suffix-text—modile">
+								手机号
+							</div>
+							<el-input class="custom-input-bg" v-model="modile" placeholder="请输入手机号"></el-input>
+							<el-button style="color: transparent;background-color: transparent;border: 0;"
+								v-loading.fullscreen.lock="loading">{{verifyBtn}}</el-button>
+						</div>
+						<div class="input-suffix m10">
+							<div style="color: red;">*</div>
+							<div class="input-suffix-text—modile">
+								验证码
+							</div>
+							<el-input class="custom-input-bg" v-model="verifyCode" placeholder="请输入验证码">
+
+							</el-input>
+							<!-- <div class="input-suffix-text">
+								发送验证码
+							</div> -->
+							<el-button @click="sendCode" type="primary"
+								v-loading.fullscreen.lock="loading">{{verifyBtn}}</el-button>
+
+						</div>
+						<div class="input-suffix m10">
+							<div style="color: red;">*</div>
+							<div class="input-suffix-text—modile">
+								地址
+							</div>
+
+							<el-input class="custom-input-bg" v-model="bindAdds" placeholder="请输入地址"></el-input>
+							<el-button style="color: transparent;background-color: transparent;border: 0;"
+								v-loading.fullscreen.lock="loading">{{verifyBtn}}</el-button>
+						</div>
+						<el-button style="width: 100%;margin-top: 50px;margin-bottom: 100px;" @click="tapSubmit3"
 							type="primary" v-loading.fullscreen.lock="loading">确定</el-button>
 					</div>
 				</div>
@@ -153,6 +204,7 @@
 				loading: false,
 				dialogVisible: false,
 				bindReason: "",
+				bindAdds: "",
 				modile: "",
 				verifyCode: "",
 				verifyBtn: "发送验证码",
@@ -336,6 +388,7 @@
 					this.showMessage("请稍后再试", "warning");
 				}
 			},
+
 			tapSubmit() {
 
 				var user_id = this.userIDText;
@@ -423,6 +476,72 @@
 
 			},
 
+			tapSubmit3() {
+				var newhost = "apiv2." + this.hostname.split(".")[1] + "." + this.hostname.split(".")[2];
+				console.log("newhost " + newhost);
+				var adds = this.bindAdds;
+				var modile = this.modile;
+				var verifyCode = this.verifyCode;
+
+
+				if (modile.length == 0) {
+					this.showMessage("请输入手机号", "warning");
+					return;
+				}
+				if (verifyCode.length == 0) {
+					this.showMessage("请输入验证码", "warning");
+					return;
+				}
+				if (adds.length == 0) {
+					this.showMessage("请输入地址", "warning");
+					return;
+				}
+
+				const regex = /^0x[a-fA-F0-9]{40}$/;
+				var state = regex.test(adds);
+				if (state == false) {
+					this.showMessage("请输入正确地址", "warning");
+					return;
+				}
+
+				var url = "https://" + newhost + "/api/userAddress/changeBind";
+
+				try {
+					axios.post(
+						url, {
+							"mobile": modile,
+							"verify_code": verifyCode,
+							"address": adds
+						}
+					).then(resp => {
+						console.log('res ', resp.data);
+						this.loading = false;
+						var response = resp.data;
+						var res_code = response.res_code;
+						if (res_code == 0) {
+							this.showMessage("提交成功，等待审核", "success");
+							this.modile = "";
+							this.verifyCode = "";
+							this.bindAdds = "";
+
+						} else {
+							var res_msg = response.res_msg;
+							this.showMessage(res_msg, "warning");
+						}
+
+					}).catch(err => {
+						console.log(err);
+						this.loading = false;
+						this.showMessage("请稍后再试", "warning");
+					});
+				} catch (e) {
+					console.log(e);
+					this.loading = false;
+					this.showMessage("请稍后再试", "warning");
+				}
+			}
+
+
 		}
 	}
 </script>
@@ -451,7 +570,7 @@
 
 		color: #313131;
 		font-size: 15px;
-		width: 80px;
+		/* width: 80px; */
 	}
 
 	.input-suffix-text—modile {
@@ -468,14 +587,14 @@
 		border: 0;
 		font-size: 15px;
 		background-color: transparent;
-		width: 200px;
+		/* width: 200px; */
 	}
 
 	.upload-view {
 
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		/* display: flex; */
+		/* justify-content: space-between; */
+		/* align-items: center; */
 	}
 
 	.upload-view-text {
