@@ -3,132 +3,10 @@
 
 	<div id="app" class="view">
 		<el-tabs v-model="activeName" @tab-click="handleClick">
-			<!-- <el-tab-pane label="解封工具" name="first">
-				<div class="input_view">
-					<div class="input-suffix">
-						<div class="input-suffix-text">
-							用户ID
-						</div>
-						<el-input class="custom-input-bg" v-model="userIDText" placeholder="请输入用户ID"></el-input>
-					</div>
-
-					<div class="input-suffix m10">
-						<div class="input-suffix-text">
-							姓名
-						</div>
-						<el-input class="custom-input-bg" v-model="nameText" placeholder="请输入姓名"></el-input>
-					</div>
-
-					<div class="input-suffix m10">
-						<div class="input-suffix-text">
-							身份号
-						</div>
-						<el-input class="custom-input-bg" v-model="idNumersText" placeholder="请输入身份证号"></el-input>
-					</div>
 
 
 
-				</div>
-
-				<div class="input_view m10">
-					<div class="upload-view-text">身份证正面照片</div>
-					<div class="upload-view">
-						<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList"
-							ref="upload1" list-type="picture-card" :on-success="handleSuccess1">
-							<img src="./assets/idcard.png" class="upload-view-img m10" />
-						</el-upload>
-					</div>
-				</div>
-
-				<div class="input_view m10">
-					<div class="upload-view-text">身份证背面照片</div>
-					<div class="upload-view">
-						<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList"
-							ref="upload2" list-type="picture-card" :on-success="handleSuccess4">
-							<img src="./assets/idcard_back.png" class="upload-view-img m10" />
-						</el-upload>
-					</div>
-				</div>
-
-				<div class="input_view m10">
-					<div class="upload-view-text">手持身份证照片</div>
-					<div class="upload-view">
-						<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList"
-							ref="upload3" list-type="picture-card" :on-success="handleSuccess2">
-							<img src="./assets/hand.png" class="upload-view-img m10" />
-						</el-upload>
-					</div>
-				</div>
-
-				<div class="input_view m10">
-					<div style="display: flex;justify-content: space-between">
-						<div class="upload-view-text">手持解封申请书</div>
-						<div class="upload-view-default" @click="seeDefault">查看示例</div>
-					</div>
-					<div class="upload-view">
-						<el-upload class="upload-view m10" :action="action" :limit="1" :file-list="fileList"
-							ref="upload4" list-type="picture-card" :on-success="handleSuccess3">
-							<img src="./assets/shenqing.png" class="upload-view-img m10" />
-						</el-upload>
-					</div>
-				</div>
-
-				<el-button style="width: 100%;margin-top: 50px;margin-bottom: 100px;" @click="tapSubmit" type="primary"
-					v-loading.fullscreen.lock="loading">确定</el-button>
-
-			</el-tab-pane> -->
-			<el-tab-pane label="解绑工具" name="second">
-
-				<div>
-					<div class="input_view">
-						<!-- <div class="input-suffix">
-							<div class="input-suffix-text—modile">
-								用户ID(非必填)
-							</div>
-							<el-input class="custom-input-bg" v-model="userIDText" placeholder="请输入用户ID"></el-input>
-						</div> -->
-						<div class="input-suffix">
-							<div style="color: red;">*</div>
-							<div class="input-suffix-text—modile">
-								手机号
-							</div>
-							<el-input class="custom-input-bg" v-model="modile" placeholder="请输入手机号"></el-input>
-							<el-button style="color: transparent;background-color: transparent;border: 0;"
-								v-loading.fullscreen.lock="loading">{{verifyBtn}}</el-button>
-						</div>
-						<div class="input-suffix m10">
-							<div style="color: red;">*</div>
-							<div class="input-suffix-text—modile">
-								验证码
-							</div>
-							<el-input class="custom-input-bg" v-model="verifyCode" placeholder="请输入验证码">
-
-							</el-input>
-							<!-- <div class="input-suffix-text">
-								发送验证码
-							</div> -->
-							<el-button @click="sendCode" type="primary"
-								v-loading.fullscreen.lock="loading">{{verifyBtn}}</el-button>
-
-						</div>
-						<div class="input-suffix m10">
-							<div style="color: red;">*</div>
-							<div class="input-suffix-text—modile">
-								解绑原因
-							</div>
-
-							<el-input class="custom-input-bg" v-model="bindReason" placeholder="请输入解绑原因"></el-input>
-							<el-button style="color: transparent;background-color: transparent;border: 0;"
-								v-loading.fullscreen.lock="loading">{{verifyBtn}}</el-button>
-						</div>
-						<el-button style="width: 100%;margin-top: 50px;margin-bottom: 100px;" @click="tapSubmit2"
-							type="primary" v-loading.fullscreen.lock="loading">确定</el-button>
-					</div>
-				</div>
-
-			</el-tab-pane>
-
-			<el-tab-pane label="更换绑定" name="first">
+			<el-tab-pane label="绑定" name="first">
 
 				<div>
 					<div class="input_view">
@@ -167,8 +45,12 @@
 							<el-button style="color: transparent;background-color: transparent;border: 0;"
 								v-loading.fullscreen.lock="loading">{{verifyBtn}}</el-button>
 						</div>
+						<div style="margin-top: 25px;font-size: 15px;color: red;">
+							警告⚠️：当该手机用户已绑定地址时，将会覆盖旧地址。请谨慎操作。
+						</div>
 						<el-button style="width: 100%;margin-top: 50px;margin-bottom: 100px;" @click="tapSubmit3"
 							type="primary" v-loading.fullscreen.lock="loading">确定</el-button>
+							
 					</div>
 				</div>
 
@@ -191,7 +73,7 @@
 		data() {
 			return {
 				hostname: window.location.hostname,
-				activeName: 'second',
+				activeName: 'first',
 				action: "https://apiv2.sr2.top/api/upload_oss",
 				userIDText: "",
 				nameText: "",
